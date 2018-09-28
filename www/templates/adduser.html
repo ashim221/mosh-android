@@ -1,0 +1,54 @@
+<ion-view view-title="Add New User">
+  <ion-nav-bar class="bar-balanced">
+     <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+  </ion-nav-bar>
+  <ion-content>
+    <!-- Logo -->
+    <div class="padding text-center">
+      
+      <h2 class="dark">Add New User</h2>
+    </div>
+    <div ng-show="errors">
+      <p class="error" ng-repeat="error in errors" style="text-align: center;"><b><big> {{error.msg}}</big></b></p>
+    </div>
+    <!-- Signup form -->
+    <form name="signup_form" class="form-container" novalidate>
+    <div class="list list-inset transparent-form">
+      <label class="item item-input">
+        <i class="ion-ios-person-outline light icon-label"></i>
+        <input type="text" placeholder="Your name" ng-model="data.name" required>
+      </label>
+      <label class="item item-input">
+        <i class="ion-ios-email-outline light icon-label"></i>
+        <input type="email" placeholder="Email" ng-model="data.email" required>
+      </label>
+      <label class="item item-input">
+        <i class="ion-ios-locked-outline light icon-label"></i>
+        <input type="password" placeholder="Password" ng-model="data.password" required>
+      </label>
+      <label class="item item-input">
+        <i class="ion-ios-locked-outline light icon-label"></i>
+        <input type="text" placeholder="Location" ng-model="data.location" required>
+      </label>
+    </div>
+    <div class="padding">
+      <button class="button button-block button-positive" ng-click="adduser(data)" ng-disabled="signup_form.$invalid">
+        Add New User
+      </button>
+    </div>
+</form>
+    
+
+    <!-- Other links -->
+    <div class="padding row">
+      <div class="col">
+        <span class="light">Forgot password?</span>
+      </div>
+      <div class="col">
+        <a ui-sref="login" class="light">Have account? Login</a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
