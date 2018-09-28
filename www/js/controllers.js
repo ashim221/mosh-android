@@ -702,8 +702,13 @@ confirmPopup.then(function(res) {
 $scope.edittask= function(data)
 	{
 		console.log(data);
+	
+	$scope.difference = new Date().getTimezoneOffset();
+	
+	$scope.difference = $scope.difference/60;
+	console.log($scope.difference);
 		$scope.error = false;
-		if ($scope.data.chosendate1.getMonth()<10)
+		if ($scope.data.chosendate1.getMonth()<9)
 					{
 						$scope.month = '0'+ ($scope.data.chosendate1.getMonth()+1);
 					}
@@ -720,17 +725,18 @@ $scope.edittask= function(data)
 					{
 						$scope.date = $scope.data.chosendate1.getDate();
 					}
-		if (!data.all)
+	if (!data.all)
 			{
-				
-				console.log('12');
-				if ($scope.data.starttime.getUTCHours()<10)
+				console.log($scope.data);
+				$scope.hourss = $scope.data.starttime.getUTCHours()-$scope.difference;
+				console.log($scope.hourss);
+				if ($scope.hourss<10)
 					{
-						$scope.starthour = '0'+ $scope.data.starttime.getUTCHours();
+						$scope.starthour = '0'+ $scope.hourss;
 					}
 				else
 					{
-						$scope.starthour = $scope.data.starttime.getUTCHours();
+						$scope.starthour = $scope.hourss;
 					}
 				if ($scope.data.starttime.getUTCMinutes()<10)
 					{
@@ -741,14 +747,15 @@ $scope.edittask= function(data)
 					{
 						$scope.startmin = $scope.data.starttime.getUTCMinutes();
 					}
+					$scope.endhourss = $scope.data.endtime.getUTCHours()-$scope.difference;
 				
-				if ($scope.data.endtime.getUTCHours()<10)
+				if ($scope.endhourss<10)
 					{
-						$scope.endhour = '0'+ $scope.data.endtime.getUTCHours();
+						$scope.endhour = '0'+ $scope.endhourss;
 					}
 				else
 					{
-						$scope.endhour = $scope.data.endtime.getUTCHours();
+						$scope.endhour = $scope.endhourss;
 					}
 				if ($scope.data.endtime.getUTCMinutes()<10)
 					{
@@ -761,7 +768,7 @@ $scope.edittask= function(data)
 					}
 					
 				$scope.startDate1 = $scope.data.chosendate1.getUTCFullYear()+'-'+($scope.month)+'-'+$scope.date;
-				console.log($scope.startDate1);
+				console.log($scope.starthour);
 				$scope.startTime1 =   $scope.starthour+":"+$scope.startmin;
 				$scope.endTime1 =   $scope.endhour+":"+$scope.endmin;
 				$scope.startTime = $scope.startDate1+'T'+$scope.startTime1;
@@ -785,6 +792,9 @@ $scope.edittask= function(data)
 				$scope.data.startTime = new Date($scope.dat);
 				$scope.compare = new Date($scope.dat1);
 			}
+			
+	
+	
 		if ($scope.compare< new Date())
 			{
 				$scope.error = true;
