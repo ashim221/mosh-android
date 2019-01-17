@@ -110,6 +110,7 @@ angular.module('starter.controllers', [])
 			console.log("http://moshfitness.london/diary/getuserevent.php?token="+token);
 		$http.get("http://moshfitness.london/diary/getuserevent.php?token="+token)
     .then(function (response) {
+			console.log(response);
 			$scope.event = response.data.event;
 			for (var ki=0;ki<$scope.event.length;ki++)
 				{
@@ -328,7 +329,6 @@ $scope.decline= function(user) {
   };
   $rootScope.me =  JSON.parse(window.localStorage.user);
 			console.log($rootScope.me);
-		var token = $rootScope.me['0'].token;
   console.log("http://moshfitness.london/diary/admingetusers.php?token="+$rootScope.me['0'].token);
   $http.get("http://moshfitness.london/diary/admingetusers.php?token="+$rootScope.me['0'].token)
     .then(function (response) {
@@ -337,6 +337,17 @@ $scope.decline= function(user) {
 			
 
 		});
+	$scope.refresh= function()
+	{
+		 $rootScope.me =  JSON.parse(window.localStorage.user);
+  console.log("http://moshfitness.london/diary/admingetusers.php?token="+$rootScope.me['0'].token);
+  $http.get("http://moshfitness.london/diary/admingetusers.php?token="+$rootScope.me['0'].token)
+    .then(function (response) {
+			$scope.users = response.data.data;
+			console.log($scope.users);	
+
+		});
+	}
   
 $scope.seecalendar = function(user)
 {
@@ -885,7 +896,8 @@ $scope.edittask= function(data)
 		if (!data.all)
 			{
 				console.log($scope.data);
-				$scope.hourss = $scope.data.starttime.getUTCHours()-$scope.difference;
+				console.log($scope.data.starttime.getHours());
+				$scope.hourss = $scope.data.starttime.getHours()-$scope.difference;
 				console.log($scope.hourss);
 				if ($scope.hourss<10)
 					{
@@ -904,7 +916,7 @@ $scope.edittask= function(data)
 					{
 						$scope.startmin = $scope.data.starttime.getUTCMinutes();
 					}
-					$scope.endhourss = $scope.data.endtime.getUTCHours()-$scope.difference;
+					$scope.endhourss = $scope.data.endtime.getHours()-$scope.difference;
 				
 				if ($scope.endhourss<10)
 					{

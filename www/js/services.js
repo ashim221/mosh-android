@@ -241,11 +241,14 @@ this.doAddUser = function(user, token){
   
   
   this.userIsLoggedIn = function(){
-	  
-    var deferred = $q.defer(),
-        authService = this,
-		tok = window.localStorage.getItem('token');
+	  var isLoggedIn = true;
+	  $rootScope.me =  JSON.parse(window.localStorage.user);
+			console.log($rootScope.me);
+		var tok = $rootScope.me['0'].token;
 	  console.log(tok);
+    var deferred = $q.defer(),
+        authService = this;
+	  
 		if (!tok)
 		{
 			isLoggedIn = false;
@@ -253,7 +256,18 @@ this.doAddUser = function(user, token){
 		}
 		else
 		{
-        isLoggedIn = (authService.getUser(tok) !== null);
+			authService.getUser(tok).then(function(response){
+				console.log(response);
+				if(response===false)
+					{
+						isLoggedIn = false;
+					}
+				else
+					{
+						isLoggedIn = true;
+					}
+			});
+
 		}
     deferred.resolve(isLoggedIn);
 
@@ -270,7 +284,7 @@ this.getUser = function(token){
 	$http({
   method: 'POST',
   url: 'http://moshfitness.london/diary/auth.php',
-  data: $httpParamSerializerJQLike({
+	data: $httpParamSerializerJQLike({
 	  "token":token
   }),
   headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -280,10 +294,9 @@ this.getUser = function(token){
 		auth.data.header = {headers: {'token': response.data.token}};
 		$cookies.put("token", response.data.token, 365);
 		auth.data.user = response.data;
-		window.localStorage.user = JSON.stringify(auth.data.user);
-		$rootScope.me =  JSON.parse(window.localStorage.user);
 		console.log (auth.data.user);
 		deferred.resolve(response.data);
+		
 	}
 	else
 	{
@@ -299,6 +312,7 @@ this.getUser = function(token){
     return deferred.promise;
 	}
   };
+   	
     
 this.doLogin = function(user){
 	console.log(user);

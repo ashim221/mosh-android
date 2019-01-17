@@ -25,19 +25,18 @@ angular.module('starter', ['ionic', 'ngCordova' ,'starter.controllers', 'starter
 
     AuthService.userIsLoggedIn().then(function(response)
     {
-      if (response === true)
-      {
-      console.log(response);
+       if (response === true)
+		  {
+		  console.log(response);
           // success 
-      $state.go('home',{}, {reload:true});
-      $rootScope.backbutton = false; 
+      $state.go('home');
       $ionicLoading.hide();
-      }
-      else
-      {
-    $state.go('login');
+		  }
+		  else
+		  {
+	  $state.go('login');
       $ionicLoading.hide();  
-      }
+		  }
     });
   });
 })
